@@ -1,0 +1,2 @@
+# Study-Scientific-Computation-with-Python
+In this repository we present a notebook in python about the studies of Scientific Computation, this contain the theory and of course the resolution of the exercisies. The initial study is with the book Scientific Computation with Python 3 of Claus Fuhrer, Jan Erick Solem, Olivier Verdier. In subsequent we whant study the book Effective Computation in Physics of Anthony Scopatz &amp; Kathryn D. Huff and finally we whant to study Python for Data Analysis of Wes McKinney.
