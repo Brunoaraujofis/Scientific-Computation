@@ -314,8 +314,119 @@ A = np.array([[1.,2.,3.,4.],
 Zeros_A= np.zeros(np.shape(A))
 print(Zeros_A)
 
-# O comando itentity(n) cria uma matriz identidade (n,n)
+# O comando identity(n) cria uma matriz identidade (n,n)
 
 I = np.identity(10)
 print(I)
 print(np.shape(I))
+
+# ------------------------------------- The shape function -----------------------------------------------
+
+# O shape de uma matriz é uma tupla com suas dimensções. 
+M = np.identity(3)
+print(np.shape(M))
+
+# Já para um vetor o shape é um singleton (singleton = 1-tupla) contando seu comprimento
+
+v = np.array([1.,0.,0.])
+print(np.shape(v))
+print(v.shape)
+# É equivalente usar o atributo ou a função shape, porém uma das vantagens de usar
+# a função shape é que esta pode ser aplicadas em escalares ou listas
+
+print(np.shape(1.))
+print(np.shape([1,2]))
+print(np.shape([[1,2]]))
+
+# ------------------------------------- Number of Dimensions -----------------------------------------------
+
+# A dimensão de um array pode ser obtida pela função np.ndim()
+
+M = np.identity(7)
+print(np.ndim(M))
+
+# Neste caso retorna o núemro dois pois a dim é entendida como o rank do tensor,
+# ou ainda o número de indices necessários para obtermos a informação em uma das entradas
+# do array
+
+v = np.array([1.,2.,3.])
+print(np.ndim(v))
+a = 3 # Dimensão de um vetor
+print(np.ndim(a)) # Dimensão de um escalar
+
+T = np.zeros((2,3,4))
+print(T)
+# Neste caso ao printarmos T ele entende com camadas de profundidade de um matriz
+# T é um tensor de rank 3, ou seja, um cubo de números.
+
+print(np.ndim(T))
+
+# De forma equivalente como o função shape() retorna uma tupla que tem o número de entradas
+# igual a dimensão, então podemos usar len(shape()) para obter a dimensão
+
+print(len(np.shape(T)))
+print(len(np.shape(v)))
+
+# ------------------------------------- Reshape -----------------------------------------------
+
+
+# O método reshape da uma nova vista\formato ao array sem copiar os dados do array, e.g.,
+v = np.array([0,1,2,3,4,5])
+M = v.reshape(2,3)
+print(np.shape(M))
+print(M)
+print(v)
+
+# Neste caso vimos que podemos construir uma matriz de shape (2,3) de um vetor
+M[0,0] = 10
+print(v[0])
+
+# Contudo os dados de M e v não são copiados, eles são os mesmos dados
+# por isso ao impormos M[0,0] = 0 consequentemente obtemos que v[0] = 0, os dados estão vinculados
+
+
+# As vezes é conveniente especificar apenas um parâmetro do reshape e deixar o python determinar o outro
+# isto é feito colocando o valor de -1 na entrada que vamos deixar em aberto
+v = np.arange(8)
+print(v)
+M = v.reshape(2,-1)
+print(np.shape(M))
+
+N = v.reshape(-1,2)
+print(np.shape(N))
+
+# -------------------------------------Transpose -----------------------------------------------
+
+# A transposta de uma matriz A pode ser obitida por B = A.T, assim B é a matriz transposta de A
+A = np.array([[1.,2.,3.],[4.,5.,6.],[7.,8.,9.]])
+
+B = A.T
+print(B)
+print(A)
+
+# Da mesma forma que o reshape() transposição não copia os dados fazendo com que eles fique vinculados
+
+A[1,0] = 5
+# A[1,0] = 5 faz com que B[0,1] =5 
+print(B)
+
+# Transpor vetores não fazem sentido já que os vetores são de dimensão 1
+# Contudo Numpy ira retornar o mesmo objeto
+
+v = np.arange(4)
+print(np.shape(v))
+v1 = v.T
+print(v1)
+print(v)
+
+print(np.shape(v1))
+
+# Podemos criar matrizes coluna ou matrizes linha com vetores
+
+v2 = v.reshape(1,4)
+v3 = v.reshape(4,1)
+print(v2)
+print(v3)
+
+# -------------------------------------Stacking -----------------------------------------------
+
