@@ -428,5 +428,56 @@ v3 = v.reshape(4,1)
 print(v2)
 print(v3)
 
-# -------------------------------------Stacking -----------------------------------------------
+# -------------------------------------Stacking \ Empilhamento -----------------------------------------------
 
+# O método universal de construir matrizes de submatrizes é usar o comando concatene. 
+# Com a seguinte sintaxe
+a1 = np.array([[1.,2.,3.],
+              [0.,0.2,10.]])
+a2 = np.identity(3)
+a3 = np.concatenate((a1,a2), axis = 0)
+print(a3)
+
+# Este comando concatena as matrizes verticalmente quando usamos axis = 0
+
+# Se tentamos o comado a3 = np.concatenate((a1,a2), axis = 1) retorna um erro pois as matrizes não são 
+# de tamanhos compatíveis verticalmente
+
+a1= np.array([[1.,2.,3.], [1.,1.,1.], [ 1.,1.,1.]])
+
+a3 = np.concatenate((a1,a2), axis = 1)
+print(a3)
+
+# definindo a1 como uma matriz 3x3 conseguimos fazer a concatenação
+# Podemos usar as funções np.vstack([,]), np.hstack([,]) e np.columnstack([,])
+# para fazer stack vertical, horizontal e de vetores
+
+print(np.vstack([a1,a2]))
+print(np.hstack([a1,a2]))
+
+# Assim podemos defirnir novas matrizes e acessalas pelo index da entrada
+a4 = np.vstack([a1,a2]) 
+print(a4[3,0])
+
+# -------------------------------------Stacking de Vetores -----------------------------------------------
+
+v1 = np.array([1.,2.,3.])
+v2 = np.array([0.,0.,0.])
+print(np.column_stack([v1,v2]))
+print(np.hstack([v1,v2]))
+print(np.vstack([v1,v2]))
+
+print(np.shape(np.column_stack([v1,v2]))) # Retorna uma matriz
+print(np.shape(np.hstack([v1,v2]))) # Retorna um vetor
+print(np.shape(np.vstack([v1,v2]))) # Retorna uma matriz
+
+# Permutação simplética
+
+def symp(v):
+    n = len(v)//2
+    return np.hstack([v[n:],v[:n]])
+
+
+v = np.arange(8)
+print(v)
+print(symp(v))
