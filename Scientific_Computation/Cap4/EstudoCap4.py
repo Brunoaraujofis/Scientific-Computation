@@ -15,9 +15,9 @@ from scipy import *
 from matplotlib import * 
 import numpy as np
 import matplotlib.pyplot as plt
+import scipy.linalg as sl
 from scipy.linalg import norm
 from scipy.linalg import solve 
-
 # --------------------------- Capítulo 3: Container Types ---------------------------
 
 
@@ -481,3 +481,115 @@ def symp(v):
 v = np.arange(8)
 print(v)
 print(symp(v))
+
+# -------------------------------------Functions Acting on Arrays -----------------------------------------------
+
+# Existem vários tipos de funções atuando em arrays, algumas atuam por elemento, 
+#retornando assim um array do mesmo shape. Estas são chamadas funções universais
+
+# Outras funções de arrays podem retornar arrays de shape diferentes ao original.
+
+# A função cos do numpy é um exemplo clássico de universal function
+
+print(np.cos(np.pi))
+a1 = np.array([1, 0, -1]) 
+print(np.cos(a1))
+print(np.shape(np.cos(np.pi)), np.shape(np.cos(a1)))
+print(np.shape(np.pi), np.shape(a1))
+
+# Vemoms que a função cos do numpy não muda o shape do array que ela atua
+
+# -------------------------------------Create universal functions -----------------------------------------------
+
+# Sua função será automaticamente universal se vc usar na construção dela 
+# apenas funções universais.
+
+def heaviside(x):
+    if x >= 0:
+        return 1.
+    else:
+        return 0.
+#print(heaviside(array([-1, 2]))) retorna um erro
+
+# Esperariamos que a função heaviside atuando sobre um array [a,b]
+# deveria retorna outro array [heaviside(a),heviside(b)], mas isso não ocorre pois ela 
+# sempre retorna uma escalar não importando o tamanho do input que vc coloque nela
+
+# A função do Numpy vectorize nos ajuda a solucionar esse problema rapidamente
+
+vheaviside = np.vectorize(heaviside)
+
+a4= vheaviside(np.array([-1,2]))
+print(a4)
+
+# Este método é interessante quando aplicado para plot de funções
+
+xvals = np.linspace(-1, 1, 100)
+plt.plot(xvals, np.vectorize(heaviside)(xvals)) # Esta linha de código diz para plotar o xvals pela função vetorizes da heaviside calculada em xvals
+plt.axis([-1.5, 1.5, -0.5,1.5])
+
+
+# -------------------------------------Array functions -----------------------------------------------
+
+# Existem varios exemplos de funções que atuam sobre arrays mas não atuam elemento por elemento
+# alguns exemplos são as funções max, min e sum. Essas funções podem atuar em toda a matriz
+# ou nas colunas ou linhas. Considerando a convenção de que quando nenhuma 
+# argumento é dado atua sobre toda a matriz
+
+A = np.array([[1.,2.,3.,4. ],
+             [5.,6.,7.,8.]])
+print(np.sum(A))
+# O comando possui um parâmetro opicional, axis. Permitindo escolher em qual eixo vamos performar a soma
+# E.g., se axis = 0 isto significa que a soma deve ocorrer sobre o primeiro axis ou seja 
+# as linhas se soman, no caso axis = 1 as colunas se soman
+
+print(np.sum(A, axis = 0))
+print(np.sum(A, axis = 1))
+
+print(np.shape(np.sum(A, axis = 0)))
+print(np.shape(np.sum(A, axis = 1)))
+
+# Vale notar que np.sum(B, axis = 0) em que B tem shape = (m,n) retorna um vetor de shape = (n,)
+# Em análogo np.sum(B, axis = 1) retorna um vetor de shape = (m,)
+
+# -------------------------------------Linear algebra methods in SciPy -----------------------------------------------
+# o módulo scipy.linalg tem um amontoado de métodos para algebra linear em python
+
+
+# Considere o sistema de equação linear Ax= b, A uma matriz nxn 
+#Decomposição LU (lower Upper) decompõe a matriz A em um produto de duas matriz 
+# L e U , A = LU onde L é uma matriz triangular inferior e U é uma matriz triangular superior
+# Podemos levar enconta tbm que se P é uma matriz de permutação
+
+# Ax = b tem a mesma solução que PAx = Pb
+# A decomposição LU encontra uma matriz de permutação P e as matriz L e U de modo que 
+
+# PA = LU ou equivalentemente A = PLU. Além disso, L pode ser determinado de modo que 
+# L_{ii} = 1 e como L_{ij} = 0 se i > j temos que determinar apenas L_{ij} para i<j. Assim,
+# U tem n + n(n-1)/2 informações e L apenas n(n-1)/2 e portanto L e U pondem ser armazenadas 
+# em uma matriz nxn ( Por isso A é nxn). Já a matriz P é alocada em um vetor chado pivot de n entradas
+
+# Scipy tem dois métodos de caucular a fatorização LU. O padrão é scipy.linalg.lu
+#Na qual retorna três matrizes P, L e U
+
+# M = np.array([[4.,3.],
+#               [6.,3.]])
+# print(sl.lu(A))
+
+
+# o outro método é o lu_factor que é conveniente usar quando usaramos tbm o lu_solve que iremos
+# usar a seguir
+M = np.array([[4.,3.],
+              [6.,3.]])
+[LU,piv] = sl.lu_factor(M)
+print([LU,piv])
+
+#Aqui, a matriz A é fatorizada e um array com as informações sobre L e U são retornadas, além disso
+# é retornado tbm a informação do vetor pivot. Com essas informações o sistema pode ser resolvid
+# fazendo uma permutação de linhas nos vetores b de acordo com a informação no vetor pivot.
+# Este procedimento é realizado no Python com lu_solve method. 
+
+# Usamos sl.solve((LU,piv),bi) para solucionar o sistema de equações Axi = bi
+# onde já performações fatorização LU em A como mostramos no exemplo acima com a matriz M.
+
+# -------------------------------------Solving a least square problem with SVD -----------------------------------------------
