@@ -589,7 +589,45 @@ print([LU,piv])
 # fazendo uma permutação de linhas nos vetores b de acordo com a informação no vetor pivot.
 # Este procedimento é realizado no Python com lu_solve method. 
 
-# Usamos sl.solve((LU,piv),bi) para solucionar o sistema de equações Axi = bi
+# Usamos sl.solve((LU,piv),bi) para solucionar o sistema de equações A*x_i= b_i
 # onde já performações fatorização LU em A como mostramos no exemplo acima com a matriz M.
 
 # -------------------------------------Solving a least square problem with SVD -----------------------------------------------
+# Um sistema linear de equações do tipo A*x=b com A sendo uma matriz m x n e m > n é um sistema
+# overdeterminado ( tem mais equações do que icognitas) e constuma não ter solução.
+# Comumento buscasse um x_star pertencente ao R^n como a propriedade: 
+    # || A*x_star - b || = min_{x pertencer ao R^{n}}|| A*x - b||.
+#
+# Denominado last square problem. 
+
+# Scipy fornece umas forma de resolver este problema pelo método de decomposição singular (svd)
+# (Ver página 89 do livro texto)
+
+#  import scipy.linalg as sl
+# [U1, Sigma_1, VT] = sl.svd(A, full_matrices = False,
+# compute_uv = True)
+# xast = dot(VT.T, dot(U1.T, b) / Sigma_1)
+# r = dot(A, xast) - b # computes the residual
+# nr = sl.norm(r, 2) # computes the Euclidean norm of r
+
+# -------------------------------------More Methods -----------------------------------------------
+
+
+#Algumas funções do módulo scipy.linalg são dados na tabela a seguir
+
+#  Methods        |Description (matrix methods)
+# sl.det          |Determinant of a matrix
+# sl.eig          |Eigenvalues and eigenvectors of a matrix
+# sl.inv          |Matrix inverse
+# sl.pinv         |Matrix pseudoinverse
+# sl.norm         |Matrix or vector norm
+# sl.svd          |Singular value decomposition
+# sl.lu           |LU decomposition
+# sl.qr           |QR decomposition
+# sl.cholesky     |Cholesky decomposition
+# sl.solve        |Solution of a general or symmetric linear system: Ax = b
+# sl.solve.banded | The same for banded matrices
+# sl.lstsq Least  |squares solution
+
+A = np.array([[3,4], [6,2]])
+print(" Estes são os alto vetores e valores da matriz A:", sl.eig(A))
