@@ -4,13 +4,6 @@ Created on Sat Oct 16 17:44:59 2021
 
 @author: Bruno
 """
-
-# -*- coding: utf-8 -*-
-"""
-Created on Tue Sep 28 14:59:51 2021
-
-@author: Bruno
-"""
 #CONFIGURAÇÔES 
 # Sempre usar no cabeçalho (préambulo) matplotlib e scypi
 # Os erros aqui no cabeçalho são devidos ao não uso dos pacotes durante o código,
@@ -43,13 +36,12 @@ import scipy.linalg as sl
 
 ################ Feito sem a escolha aleatória 
 x = np.arange(0, 3, 0.5)
+#print(x**5)
 y = np.array([-2.0, 0.5, -2.0, 1.0, -0.5, 1.0])
-V = np.array([x**i for i in np.arange(6)])
+V = np.array([x**(i+5) for i in np.arange(6)])
 V = V.T
 print(V)
-a = sl.solve(V,y)
-print(a)
-print(np.allclose(np.dot(V,a),y))
+# a = sl.solve(V,y)
 #--------------------------------------------------------------------------------------
 
 # Definindo duas formas diferentes de fazer a função Poly
@@ -63,11 +55,11 @@ def poly1(z):
     for i in np.arange(6):
         p = p + a[5-i]*z**i
     return p
-xvals = np.linspace(0.5, 2, 10)
-plt.plot(xvals, poly1(xvals))
-plt.scatter(x, y, marker = "*", norm = True)
-plt.show()
+# xvals = np.linspace(0.0, 2.5, 10)
+# plt.plot(xvals, poly1(xvals))
+# plt.scatter(x, y, marker = "*", norm = True)
+# plt.show()
 
 """Não consigo entender porque os pontos ficam distribuidos daquela forma, possívelmente
-é a escala de y, porque a função poly explode muito facilmente...
-"""
+é a escala de y, porque a função poly explode muito facilmente... 
+A matriz de Vandermonde não foi definida de forma correta."""
